@@ -1,3 +1,4 @@
+#Initial Setup and Useful Info
 primes_list = [2,3,5,7,11,13]
 cube_colours = ['White','Red','Green','Orange','Blue','Yellow']
 mix = zip(primes_list,cube_colours)
@@ -5,7 +6,15 @@ colour_prime_relation = list(mix)
 msg = 'Cube piece is '
 print("The following list is the number and its associated colour:")
 print(colour_prime_relation)
+######################################################################
 
+# Como esse cubo funciona: Cada cor tem um número primo associado, peças de
+# multiplas cores é apenas o produto dos números primos associado às cores da
+# peça. A lista se diz 'primal' quando contém apenas os números associados.
+# A lista se diz 'legível' quando os números foram transformados nas suas
+# respectivas cores.
+
+#Função que detecta cor da peça
 def get_colour(cube_piece):
 	piece_colour = ' '
 	if cube_piece%2 == 0:
@@ -24,6 +33,7 @@ def get_colour(cube_piece):
 	final = msg + piece_colour_final
 	return final
 
+#Mesma utilidade que get_colour, porém retorna apenas a letra inicial da cor
 def short(cube_piece):
 	piece_colour = ' '
 	if cube_piece%2 == 0:
@@ -42,6 +52,7 @@ def short(cube_piece):
 	final = piece_colour_final
 	return final
 
+#Função que gera as peças centrais (de 1 cor) para um cubo de tamanho qualquer
 def gen_centres(cube_size = 3):
 	if cube_size <= 1:
 		return "Error"
@@ -51,6 +62,7 @@ def gen_centres(cube_size = 3):
 	centres.sort()
 	return centres
 
+#Função que gera as peças do meio (de 2 cores) para um cubo de tamanho qualquer
 def gen_edges(cube_size = 3):
 	if cube_size <= 1:
 		return "Error"
@@ -72,6 +84,7 @@ def gen_edges(cube_size = 3):
 	final = edge_pieces*size
 	return final
 
+#Função que gera as peças do canto (de 3 cores) para um cubo de tamanho qualquer
 def gen_corners(cube_size = 3):
 	if cube_size <= 1:
 		return "Error"
@@ -95,6 +108,8 @@ def gen_corners(cube_size = 3):
 			corner_pieces.append(piece)
 	return corner_pieces
 
+#As funções passadas criam algumas peças que não existem (ex: branca e amarela)
+#Essa função remove tais peças
 def remove_impossible_pieces(func, cube_size = 3):
 	lst = func
 	new_list = []
@@ -108,11 +123,13 @@ def remove_impossible_pieces(func, cube_size = 3):
 		new_list.append(i)
 	return new_list
 
+#Função de teste -- diz a cor das peças sem transformar a lista de primal para legível
 def check_colours(cube):
 	for i in cube:
 		a = short(i)
 		print(a)
 
+#Transforma a lista de peças da forma "primal" para forma legível -- não tem como reverter (função de reverter pode ser feita caso necessário)
 def transform(cube):
 	empty_list = []
 	for i in cube:
@@ -120,6 +137,7 @@ def transform(cube):
 		empty_list.append(a)
 	return empty_list
 
+#Função que junta as anteriores para gerar o cubo -- por enquanto gera uma lista unidimensional das peças
 def gen_cube(cube_size = 3):
 	if cube_size <= 1:
 		print("Cube Size Error")
@@ -133,6 +151,6 @@ def gen_cube(cube_size = 3):
 
 
 ##The piece order doesn't matter for now - Position and Permutations TBA
-Cube = gen_cube(4)
+Cube = gen_cube(3)
 print(Cube)
 
