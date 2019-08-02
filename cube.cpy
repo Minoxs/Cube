@@ -1,4 +1,4 @@
-#Initial Setup and Useful Info
+﻿#Initial Setup and Useful Info
 primes_list = [2,3,5,7,11,13]
 cube_colours = ['White','Red','Green','Orange','Blue','Yellow']
 mix = zip(primes_list,cube_colours)
@@ -153,4 +153,4 @@ def gen_cube(cube_size = 3):
 ##The piece order doesn't matter for now - Position and Permutations TBA
 Cube = gen_cube(3)
 print(Cube)
-
+print("we dont know what were doing")
