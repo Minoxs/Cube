@@ -23,6 +23,4 @@ def render():
 	print(g,h,i)
 	print(j,k,l)
 
-
-
-render()
+print("Testing what we doin")
