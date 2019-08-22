@@ -63,3 +63,8 @@ c(3,7,2)
 c(2,9,9)
 render()
 r(3)
+
+inp = 0
+while inp != "exit":
+	do = input("Command: ")
+	eval(do)
