@@ -145,12 +145,20 @@ def gen_cube(cube_size = 3):
 	centres = gen_centres(cube_size)
 	edge_pieces = remove_impossible_pieces(gen_edges(cube_size))
 	corner_pieces = remove_impossible_pieces(gen_corners(cube_size))
+	ctr = transform(centres)
+	print(ctr)
+	edg = transform(edge_pieces)
+	print(edg)
+	cor = transform(corner_pieces)
+	print(cor)
+	ctr.sort()
+	edg.sort()
+	cor.sort()
 	cube1 = centres + edge_pieces + corner_pieces
-	cube = transform(cube1)
-	return cube
+	#cube = transform(cube1)
+	return ctr + edg + cor
 
 
 ##The piece order doesn't matter for now - Position and Permutations TBA
 Cube = gen_cube(3)
 print(Cube)
-print("we dont know what were doing")

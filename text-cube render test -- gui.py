@@ -25,22 +25,54 @@ for i in range(size):
 def c(i,j,to):
 	row[i-1][j-1] = to 
 
-def r(choice):
+def fh(choice):
 	num = choice-1
 	tb = range(num*size,size+num*size)
 	m = range(0,size)
 	t = [row[0][i] for i in tb]
-	print(t)
 	l = [row[i][num*size] for i in m]
-	print(l)
 	r = [row[i][size-1+num*size] for i in m]
-	print(r)
 	b = [row[size-1][i] for i in tb]
-	print(b)
+	
+	j = -1
+	for i in range(len(t)):
+		row[m[i]][size-1+num*size] = t[i]
+		row[size-1][tb[i]] = r[j]
+		row[m[i]][num*size] = b[i]
+		row[0][tb[i]] = l[j]
+		j += -1
+	render()
+
+def fa(choice):
+	num = choice-1
+	tb = range(num*size,size+num*size)
+	m = range(0,size)
+	t = [row[0][i] for i in tb]
+	l = [row[i][num*size] for i in m]
+	r = [row[i][size-1+num*size] for i in m]
+	b = [row[size-1][i] for i in tb]
+
+	j = -1
+	for i in range(len(t)):
+		row[m[i]][size-1+num*size] = b[j]
+		row[size-1][tb[i]] = l[i]
+		row[m[i]][num*size] = t[j]
+		row[0][tb[i]] = r[i]
+		j += -1
+	render()
 
 def render(size = size):
+	print("\n"*5)
 	for i in range(size):
-		print(row[i])
+		line = ""
+		count = 0
+		for j in row[i]:
+			if count%size == 0:
+				line += " |"
+			count += 1
+			line += " {}".format(j)
+		line += " |"
+		print(line)
 
 #render()
 ####################################################################################
@@ -58,13 +90,13 @@ c(1,7,9)
 c(1,8,9)
 c(1,9,9)
 c(2,3,9)
-c(3,9,2)
+c(3,9,5)
 c(3,7,2)
 c(2,9,9)
 render()
-r(3)
 
 inp = 0
 while inp != "exit":
-	do = input("Command: ")
+	inp = input("Command: ")
+	do = inp
 	eval(do)
