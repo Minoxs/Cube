@@ -86,6 +86,19 @@ def te(choice): #Mexe a linha 'choice' para a esquerda
 	row[choice-1][-size:] = temp
 	render()
 
+def r(choice):
+	if choice > size:
+		choice = choice%size
+	temps = []
+	for i in range(size):
+		temp2 = []
+		for j in range(size):
+			temp2.append(row[j][(size-1)*(i+1)+i])
+		temps.append(temp2)
+	for i in temps:
+		for j in reversed(i):
+			print(j)
+
 def render(size = size): #Renderiza os 'slices' do cubo separadamente
 	print("\n"*5)
 	for i in range(size):
@@ -114,3 +127,5 @@ while inp != "exit":
 		eval(do)
 	except:
 		print("Invalid Command.")
+
+####################################################################################
