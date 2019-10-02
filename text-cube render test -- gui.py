@@ -31,9 +31,13 @@ def c(i,j,to): # Modifica um valor na posição (i,j) para 'to'
 	row[i-1][j-1] = to 
 
 def fh(choice): # Rotaciona a Face número 'choice' no sentido horário
-	if choice > size:
+	choice = choice - 1
+	if choice < 0:
+		print("Invalid Choice.")
+		return 0
+	if choice >= size:
 		choice = choice%size
-	num = choice-1
+	num = choice
 	tb = range(num*size,size+num*size)
 	m = range(0,size)
 	t = [row[0][i] for i in tb]
@@ -51,9 +55,13 @@ def fh(choice): # Rotaciona a Face número 'choice' no sentido horário
 	render()
 
 def fa(choice): # Rotaciona a Face número 'choice' no sentido anti-horário
-	if choice > size:
+	choice = choice - 1
+	if choice < 0:
+		print("Invalid Choice.")
+		return 0
+	if choice >= size:
 		choice = choice%size
-	num = choice-1
+	num = choice
 	tb = range(num*size,size+num*size)
 	m = range(0,size)
 	t = [row[0][i] for i in tb]
@@ -71,33 +79,68 @@ def fa(choice): # Rotaciona a Face número 'choice' no sentido anti-horário
 	render()
 
 def td(choice): #Mexe a linha 'choice' para a direita
-	if choice > size:
+	choice = choice - 1
+	if choice < 0:
+		print("Invalid Choice.")
+		return 0
+	if choice >= size:
 		choice = choice%size
-	temp = row[choice-1][-size:]
-	row[choice-1][size:] = row[choice-1][:size**2 - size]
-	row[choice-1][:size] = temp
+	temp = row[choice][-size:]
+	row[choice][size:] = row[choice][:size**2 - size]
+	row[choice][:size] = temp
 	render()
 
 def te(choice): #Mexe a linha 'choice' para a esquerda
-	if choice > size:
+	choice = choice - 1
+	if choice < 0:
+		print("Invalid Choice.")
+		return 0
+	if choice >= size:
 		choice = choice%size
-	temp = row[choice-1][:size]
-	row[choice-1][:size**2 - size] = row[choice-1][size:]
-	row[choice-1][-size:] = temp
+	temp = row[choice][:size]
+	row[choice][:size**2 - size] = row[choice][size:]
+	row[choice][-size:] = temp
 	render()
 
-def r(choice):
-	if choice > size:
+def rh(choice): #Rotate a column down -> up (clockwise)
+	choice = choice - 1
+	if choice < 0:
+		print("Invalid Choice.")
+		return 0
+	if choice >= size:
 		choice = choice%size
 	temps = []
 	for i in range(size):
 		temp2 = []
 		for j in range(size):
-			temp2.append(row[j][(size-1)*(i+1)+i])
+			temp2.append(row[j][(choice)+(size*i)])
 		temps.append(temp2)
-	for i in temps:
-		for j in reversed(i):
-			print(j)
+	for i in range(size):
+		k = 1
+		load = temps[i]
+		for j in range(size):
+			row[i][choice+(size*j)] = load[-k]
+			k += 1
+	render()
+
+def rc(choice): #Rotate a column up -> down (counter-clockwise)
+	choice = choice - 1
+	if choice < 0:
+		print("Invalid Choice.")
+		return 0
+	if choice >= size:
+		choice = choice%size
+	temps = []
+	for i in range(size):
+		temp2 = []
+		for j in range(size):
+			temp2.append(row[j][(choice)+(size*i)])
+		temps.append(temp2)
+	for i in range(size):
+		load = temps[-(i+1)]
+		for j in range(size):
+			row[i][choice+(size*j)] = load[j]
+	render()
 
 def render(size = size): #Renderiza os 'slices' do cubo separadamente
 	print("\n"*5)
