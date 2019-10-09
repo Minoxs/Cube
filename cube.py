@@ -290,31 +290,60 @@ def transform(cube):
 	return empty_list
 
 #Função que junta as anteriores para gerar o cubo -- por enquanto gera uma lista unidimensional das peças
-def gen_cube(cube_size = 3):
+def gen_all_pieces(cube_size = 3):
 	if cube_size <= 1:
 		print("Cube Size Error")
 		return "Cube Size Error"
 	centres = gen_centres(cube_size)
 	edge_pieces = remove_impossible_pieces(gen_edges(cube_size))
 	corner_pieces = remove_impossible_pieces(gen_corners(cube_size))
-	ctr = transform(centres)
-	print(ctr)
-	edg = transform(edge_pieces)
-	print(edg)
-	cor = transform(corner_pieces)
-	print(cor)
-	ctr.sort()
-	edg.sort()
-	cor.sort()
-	cube1 = centres + edge_pieces + corner_pieces
-	#cube = transform(cube1)
-	return ctr + edg + cor
+	centres.sort()
+	edge_pieces.sort()
+	corner_pieces.sort()
+	f_centre = transform(centres)
+	f_edge = transform(edge_pieces)
+	f_corner = transform(corner_pieces)
+	final = f_centre,f_edge,f_corner
+	return final
 
+all_pieces = gen_all_pieces(size)
+print(all_pieces)
+##########CONSTRUINDO O CUBO##########
+#
+l = size-1
+row[0][0] = "RYB"
+row[1][0] = "R_B"
+row[l][0] = "RWB"
+for i in range(1,size-1):
+	row[0][i] = "R_Y"
+	row[1][i] = "_R_"
+	row[l][i] = "R_W"
+row[0][size-1] = "RYG"
+row[1][size-1] = "R_G"
+row[l][size-1] = "RWG"
+row[0][size] = "Y_B"
+row[1][size] = "_B_"
+row[l][size] = "W_B"
+for i in range(size+1,size*2):
+	row[0][i] = "_Y_"
+	row[1][i] = "000"
+	row[l][i] = "_W_"
+row[0][size*2-1] = "Y_G"
+row[1][size*2-1] = "_G_"
+row[0][size**2-size] = "OYB"
+row[1][size**2-size] = "O_B"
+for i in range(size**2-size+1,size**2):
+	row[0][i] = "O_Y"
+	row[1][i] = "_O_"
+row[0][size**2-1] = "OYG"
+row[1][size**2-1] = "O_G"
+row[0][size*2:size**2-size] = row[0][size:size*2]*(size-3)
+row[1][size*2:size**2-size] = row[1][size:size*2]*(size-3)
+for i in range(2,size-1):
+	row[i] = row[1]
+row[size-1][size*2:size**2-size] = row[size-1][size:size*2]*(size-3)
+#
 
-##The piece order doesn't matter for now - Position and Permutations TBA
-Cube = gen_cube(3)
-print(Cube)
 render()
-
 
 a = input("Press ENTER to exit.")
