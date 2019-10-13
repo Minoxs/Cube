@@ -216,7 +216,10 @@ row[0][size*2:size**2-size] = row[0][size:size*2]*(size-3)
 row[1][size*2:size**2-size] = row[1][size:size*2]*(size-3)
 row[l][size*2:size**2-size] = row[l][size:size*2]*(size-3)
 for i in range(2,size-1):
-	row[i] = row[1]
+	k = 0
+	for c in row[1]:
+		row[i][k] = c
+		k += 1
 row[size-1][size*2:size**2-size] = row[size-1][size:size*2]*(size-3)
 #
 render()
