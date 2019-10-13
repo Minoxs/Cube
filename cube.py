@@ -263,16 +263,16 @@ while command != "exit":
 		ld(1)
 	elif command == "y":
 		for i in range(size):
-			le(i)
+			le(i+1)
 	elif command == "y'":
 		for i in range(size):
-			ld(i)
+			ld(i+1)
 	elif command == "x":
 		for i in range(size):
-			cb(i)
+			cb(i+1)
 	elif command == "x'":
 		for i in range(size):
-			cc(i)
+			cc(i+1)
 	elif command == "solved":
 		check = 0
 		mistakes = []
