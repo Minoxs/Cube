@@ -206,11 +206,11 @@ move_row = []
 for i in range(size**3):
 	moves.append(random.randint(1,6))
 	move_row.append(random.randint(1,size))
-for i in range(moves):
+for i in range(len(moves)):
 	if moves[i] == 1:
 		fh(move_row[i])
 	if moves[i] == 2:
-		fc(move_row[i])
+		fa(move_row[i])
 	if moves[i] == 3:
 		le(move_row[i])
 	if moves[i] == 4:
