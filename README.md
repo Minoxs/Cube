@@ -4,8 +4,8 @@ I might add an explanation of how the rotations translate into text later, might
    
 # Standard Rotations   
 <img src="https://blog.rubiks.com/wp-content/uploads/2018/08/how-to-solve-cube-formula.png"></img>
-## A single apostrophe is used to denote the inverse rotation.   
-#### Source: https://www.rubiks.com/en-us/blog/how-to-solve-the-rubiks-cube-stage-1   
+#### Source: https://www.rubiks.com/en-us/blog/how-to-solve-the-rubiks-cube-stage-1 
+## A single apostrophe is used to denote the inverse rotation.     
 
 <b>Command 'Y' rotates the cube around Y axis</b>   
 <b>Command 'X' rotates the cube around X axis</b>   
