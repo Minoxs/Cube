@@ -231,6 +231,7 @@ for i in range(size):
 		solved.append(row[i][j])
 ###########################################################################
 ###########################################################################
+scramble_moves = []
 # Scrambling Cube
 hold = input("Starting Scramble...")
 moves = []
@@ -241,17 +242,29 @@ for i in range(size**3):
 for i in range(len(moves)):
 	if moves[i] == 1:
 		fh(move_row[i])
+		scramble_moves.append('fh({})'.format(move_row[i]))
 	if moves[i] == 2:
 		fa(move_row[i])
+		scramble_moves.append('fa({})'.format(move_row[i]))
 	if moves[i] == 3:
 		le(move_row[i])
+		scramble_moves.append('le({})'.format(move_row[i]))
 	if moves[i] == 4:
 		ld(move_row[i])
+		scramble_moves.append('ld({})'.format(move_row[i]))
 	if moves[i] == 5:
 		cc(move_row[i])
+		scramble_moves.append('cc({})'.format(move_row[i]))
 	if moves[i] == 6:
 		cb(move_row[i])
+		scramble_moves.append('cb({})'.format(move_row[i]))
+print("\n"*10)
+print("Starting position is: Red Face in front, Yellow face on top")
+print("Scramble Moves: ")
+print(scramble_moves)
 hold = input("Scramble Finished!")
+print("\n"*5)
+render()
 #
 ###########################################################################
 # Taking Commands
