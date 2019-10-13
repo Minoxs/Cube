@@ -3,7 +3,10 @@ import random
 size = 0
 while size < 1:
 	size_start = input("Cube Size: ")
-	size = int(size_start)
+	try:
+		size = int(size_start)
+	except:
+		size_start = input("Cube Size: ")
 ############################################## 
 #Special Size Case
 if size == 1:
@@ -87,9 +90,18 @@ def ld(choice): #Mexe a linha 'choice' para a direita
 		return 0
 	if choice >= size:
 		choice = choice%size
-	temp = row[choice][-size:]
-	row[choice][size:] = row[choice][:size**2 - size]
-	row[choice][:size] = temp
+	temps = []
+	for i in range(size):
+		temp2 = []
+		for j in range(size):
+			temp2.append(row[choice][j+(i*size)])
+		temps.append(temp2)
+	k = 0
+	for i in range(size):
+		load = temps[i]
+		for j in range(size):
+			row[choice][(size-1)+(j*size)-k] = load[j]
+		k += 1
 	render()
 
 def le(choice): #Mexe a linha 'choice' para a esquerda
@@ -99,9 +111,19 @@ def le(choice): #Mexe a linha 'choice' para a esquerda
 		return 0
 	if choice >= size:
 		choice = choice%size
-	temp = row[choice][:size]
-	row[choice][:size**2 - size] = row[choice][size:]
-	row[choice][-size:] = temp
+	temps = []
+	for i in range(size):
+		temp2 = []
+		for j in range(size):
+			temp2.append(row[choice][j+(i*size)])
+		temps.append(temp2)
+	
+	for i in range(size):
+		load = temps[i]
+		k = 1
+		for j in range(size):
+			row[choice][(j*size)+i] = load[-k]
+			k += 1
 	render()
 
 def cc(choice): #Rotate a column down -> up (clockwise)
