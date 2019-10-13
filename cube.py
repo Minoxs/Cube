@@ -199,6 +199,13 @@ row[size-1][size*2:size**2-size] = row[size-1][size:size*2]*(size-3)
 #
 render()
 ###########################################################################
+# Saving solved cube
+solved = []
+for i in range(size):
+	for j in range(size**2):
+		solved.append(row[i][j])
+###########################################################################
+###########################################################################
 # Scrambling Cube
 hold = input("Starting Scramble...")
 moves = []
@@ -225,7 +232,7 @@ hold = input("Scramble Finished!")
 # Taking Commands
 command = 0
 while command != "exit":
-	com = input("Choose a move.")
+	com = input("Choose a move: ")
 	try:
 		command = com.lower()
 	except:
@@ -254,6 +261,35 @@ while command != "exit":
 		le(1)
 	elif command == "u'":
 		ld(1)
+	elif command == "y":
+		for i in range(size):
+			le(i)
+	elif command == "y'":
+		for i in range(size):
+			ld(i)
+	elif command == "x":
+		for i in range(size):
+			cb(i)
+	elif command == "x'":
+		for i in range(size):
+			cc(i)
+	elif command == "solved":
+		check = 0
+		mistakes = []
+		for i in range(size):
+			for j in range(size**2):
+				if row[i][j] == solved[j+i*size**2]:
+					check += 1
+				else:
+					mistakes.append((i+1,j+1))
+		if check == size**3:
+			print("Congratulations!!!")
+			print("You solved the cube!")
+			hold = input("Press ENTER to close.")
+			exit()
+		else:
+			print("Keep trying!")
+			print(mistakes)
 	else:
 		try:
 			eval(command)
