@@ -1,5 +1,28 @@
 ﻿#Initial Setup and Useful Info
 import random
+from pathlib import Path as find
+
+###############################################
+# Main Menu
+menu = 1
+def menu():
+	print("""
+		#====================#
+		#  1 - Start Game	 #
+		#  2 - Options	     #
+		#  3 - Instructions  #
+		#  4 - Exit 		 #
+		#====================#
+		""")
+	while menu == 1:
+		inp = input("")
+###############################################
+###############################################
+# Settings
+
+###############################################
+
+
 size = 0
 while size < 1:
 	size_start = input("Cube Size: ")
