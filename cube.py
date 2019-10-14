@@ -1,4 +1,42 @@
 ﻿#Initial Setup and Useful Info
+lb = "\n"
+import random
+import platform
+import datetime
+from pathlib import Path as find
+error_msg = "Something went Wrong!"
+
+#Função que detecta e diz o sistema quando compilado
+def os_detect():
+	sys = platform.system()
+	plt = platform.release()
+	os_name = "{} {}".format(sys,plt)
+	print("Sistema Operacional: "+os_name)
+
+os_detect()
+
+#Função que define aonde será salvo logs
+def set_filepath(save_to = "not_set"):
+	saving = str(find.cwd())
+	return saving
+
+filepath = set_filepath()
+print("Pasta atual: "+filepath)
+
+time_now = datetime.datetime.now()
+print("Data: "+str(time_now))
+
+############################################################################################
+#Basic Functions############################################################################
+#Adiciona o que acontece em um .txt
+
+def printer(add_to_log, title = "log", mode = "a+", extension = ".txt"):
+	path = "{}{}{}".format(filepath,title,extension)
+	p = open(path, mode)
+	p.write(str(add_to_log) + lb)
+	p.close()
+############################################################################################
+#Initial Setup and Useful Info
 import random
 from pathlib import Path as find
 
