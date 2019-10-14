@@ -21,4 +21,10 @@ I might add an explanation of how the rotations translate into text later, might
 -Row Right-to-Left: <b>le(<i>row_number</i>)</b>   
    
 -Column Up-Down: <b>cb(<i>column_number</i>)</b>   
--Column Down-Up: <b>cc(<i>column_number</i>)</b>   
+-Column Down-Up: <b>cc(<i>column_number</i>)</b> 
+
+# To-Be-Added:
+- [ ] Save&Load Game
+- [ ] Different Render Modes
+- [ ] Multiple Rotations at once
+- [ ] Moves log (?)
