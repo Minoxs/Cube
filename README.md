@@ -1,7 +1,7 @@
 # Test Branch
 Most things might not even work here :)
 
-# Text Rubik's Cube   
+# Text Rubik's Cube V.2-Alpha
 <b>It goes up to any size, although it requires quite a bit of horizontal screen space.</b>   
 I might add an explanation of how the rotations translate into text later, might not /shrug.   
    
@@ -27,9 +27,11 @@ I might add an explanation of how the rotations translate into text later, might
 -Column Down-Up: <b>cc(<i>column_number</i>)</b>   
    
 # To-Be-Added:
-- [ ] Start Menu
+- [ ] Start Menu - WIP
 - [ ] Save&Load Game
 - [ ] Different Render Modes
 - [ ] Multiple Rotations at once
 - [ ] Moves log (?)
 - [ ] Show&Load scramble seed
+    
+##### Feel free to make suggestions and criticism :)

@@ -36,31 +36,34 @@ def printer(add_to_log, title = "log", mode = "a+", extension = ".txt"):
 	p.write(str(add_to_log) + lb)
 	p.close()
 ############################################################################################
-#Initial Setup and Useful Info
-import random
-from pathlib import Path as find
-
 ###############################################
 # Main Menu
-menu = 1
 def menu():
+	menu = 1
 	print("""
-		#====================#
-		#  1 - Start Game	 #
-		#  2 - Options	     #
-		#  3 - Instructions  #
-		#  4 - Exit 		 #
-		#====================#
+		#====================#\n
+		#  1 - Start Game	 #\n
+		#  2 - Options	     #\n
+		#  3 - Instructions  #\n
+		#  4 - Exit 		 #\n
+		#====================#\n
 		""")
 	while menu == 1:
-		inp = input("")
+		inp = input("What do:")
+		try:
+			inp = int(inp)
+		except:
+			print("Invalid Command!")
+			continue
+		if inp == 1:
+			break
+
+menu()
 ###############################################
 ###############################################
 # Settings
 
 ###############################################
-
-
 size = 0
 while size < 1:
 	size_start = input("Cube Size: ")
