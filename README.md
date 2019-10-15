@@ -1,6 +1,7 @@
-# Text Rubik's Cube   
+# Text Rubik's Cube V.1
 <b>It goes up to any size, although it requires quite a bit of horizontal screen space.</b>   
 I might add an explanation of how the rotations translate into text later, might not /shrug.   
+##### Stable Branch    
    
 # Standard Rotations   
 <img src="https://blog.rubiks.com/wp-content/uploads/2018/08/how-to-solve-cube-formula.png"></img>
@@ -30,3 +31,5 @@ I might add an explanation of how the rotations translate into text later, might
 - [ ] Multiple Rotations at once
 - [ ] Moves log (?)
 - [ ] Show&Load scramble seed
+    
+#### Feel free to make sugestions and criticism :)
