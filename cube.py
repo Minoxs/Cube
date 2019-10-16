@@ -1,19 +1,20 @@
 ﻿import random
 ###############################################
-size = 0
-while size < 1:
-	size_start = input("Cube Size: ")
-	try:
-		size = int(size_start)
-	except:
+def create_cube():
+	size = 0
+	while size < 1:
 		size_start = input("Cube Size: ")
+		try:
+			size = int(size_start)
+		except:
+			size_start = input("Cube Size: ")
 ############################################## 
 #Special Size Case
-if size == 1:
-	print("Cute little cube!")
-	print("Already finished, congratulations :)")
-	hold = input("ENTER to close.")
-	exit()
+	if size == 1:
+		print("Cute little cube!")
+		print("Already finished, congratulations :)")
+		hold = input("ENTER to close.")
+		menu()
 ##############################################
 # Nem me pergunte como isso funciona
 # Essa parte é encarregada de gerar o 'esqueleto' do cubo
