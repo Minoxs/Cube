@@ -38,15 +38,16 @@ def printer(add_to_log, title = "log", mode = "a+", extension = ".txt"):
 # Main Menu
 def menu():
 	menu = 1
-	print("""
-			#====================#
-			#  1 - Start Game    #
-			#  2 - Load Game     #
-			#  3 - Cube Options  #
-			#  4 - Instructions  #
-			#  5 - Exit          #
-			#====================#
-		""")
+	menu_msg =		"""
+					#====================#
+					#  1 - Start Game    #
+					#  2 - Load Game     #
+					#  3 - Cube Options  #
+					#  4 - Instructions  #
+					#  5 - Exit          #
+					#====================#
+					"""
+	print(menu_msg)
 	while menu == 1:
 		inp = input("What do:")
 		try:
@@ -55,7 +56,10 @@ def menu():
 			print("Invalid Command!")
 			continue
 		if inp == 1:
-			break
+			import cube
+			cube.render()
+			cube.commands()
+			print(menu_msg)
 		elif inp == 2:
 			print("Load Function TBA")
 		elif inp == 3:

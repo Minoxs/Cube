@@ -1,20 +1,18 @@
 ﻿import random
 ###############################################
-def create_cube():
-	size = 0
-	while size < 1:
+size = 0
+while size < 1:
+	size_start = input("Cube Size: ")
+	try:
+		size = int(size_start)
+	except:
 		size_start = input("Cube Size: ")
-		try:
-			size = int(size_start)
-		except:
-			size_start = input("Cube Size: ")
 ############################################## 
 #Special Size Case
-	if size == 1:
-		print("Cute little cube!")
-		print("Already finished, congratulations :)")
-		hold = input("ENTER to close.")
-		menu()
+if size == 1:
+	print("Cute little cube!")
+	print("Already finished, congratulations :)")
+	hold = input("ENTER to close.")
 ##############################################
 # Nem me pergunte como isso funciona
 # Essa parte é encarregada de gerar o 'esqueleto' do cubo
@@ -265,77 +263,77 @@ print("Scramble Moves: ")
 print(scramble_moves)
 hold = input("Scramble Finished!")
 print("\n"*5)
-render()
 #
 ###########################################################################
 # Taking Commands
-command_enable = 1
-command = 0
-while command_enable == 1:
-	com = input("Choose a move: ")
-	try:
-		command = com.lower()
-	except:
-		continue
-	if command == "r":
-		cc(size)
-	elif command == "r'":
-		cb(size)
-	elif command == "l":
-		cb(1)
-	elif command == "l'":
-		cc(1)
-	elif command == "b":
-		fa(size)
-	elif command == "b'":
-		fh(size)
-	elif command == "d":
-		ld(size)
-	elif command == "d'":
-		le(size)
-	elif command == "f":
-		fh(1)
-	elif command == "f'":
-		fa(1)
-	elif command == "u":
-		le(1)
-	elif command == "u'":
-		ld(1)
-	elif command == "y":
-		for i in range(size):
-			le(i+1)
-	elif command == "y'":
-		for i in range(size):
-			ld(i+1)
-	elif command == "x":
-		for i in range(size):
-			cb(i+1)
-	elif command == "x'":
-		for i in range(size):
-			cc(i+1)
-	elif command == "solved":
-		check = 0
-		mistakes = []
-		for i in range(size):
-			for j in range(size**2):
-				if row[i][j] == solved[j+i*size**2]:
-					check += 1
-				else:
-					mistakes.append((i+1,j+1))
-		if check == size**3:
-			print("Congratulations!!!")
-			print("You solved the cube!")
-			hold = input("Press ENTER to close.")
-			exit()
-		else:
-			print("Keep trying!")
-			print(mistakes)
-	elif command == "exit":
-		import menu
-	else:
+def commands():
+	command_enable = 1
+	command = 0
+	while command_enable == 1:
+		com = input("Choose a move: ")
 		try:
-			eval(command)
+			command = com.lower()
 		except:
-			print("Invalid Command.")
 			continue
+		if command == "r":
+			cc(size)
+		elif command == "r'":
+			cb(size)
+		elif command == "l":
+			cb(1)
+		elif command == "l'":
+			cc(1)
+		elif command == "b":
+			fa(size)
+		elif command == "b'":
+			fh(size)
+		elif command == "d":
+			ld(size)
+		elif command == "d'":
+			le(size)
+		elif command == "f":
+			fh(1)
+		elif command == "f'":
+			fa(1)
+		elif command == "u":
+			le(1)
+		elif command == "u'":
+			ld(1)
+		elif command == "y":
+			for i in range(size):
+				le(i+1)
+		elif command == "y'":
+			for i in range(size):
+				ld(i+1)
+		elif command == "x":
+			for i in range(size):
+				cb(i+1)
+		elif command == "x'":
+			for i in range(size):
+				cc(i+1)
+		elif command == "solved":
+			check = 0
+			mistakes = []
+			for i in range(size):
+				for j in range(size**2):
+					if row[i][j] == solved[j+i*size**2]:
+						check += 1
+					else:
+						mistakes.append((i+1,j+1))
+			if check == size**3:
+				print("Congratulations!!!")
+				print("You solved the cube!")
+				hold = input("Press ENTER to close.")
+				exit()
+			else:
+				print("Keep trying!")
+				print(mistakes)
+		elif command == "exit":
+			command_enable = 0
+		else:
+			try:
+				eval(command)
+			except:
+				print("Invalid Command.")
+				continue
 ###########################################################################
