@@ -27,7 +27,7 @@ I might add an explanation of how the rotations translate into text later, might
 -Column Down-Up: <b>cc(<i>column_number</i>)</b>   
    
 # To-Be-Added:
-- [ ] Start Menu - WIP
+- [X] Start Menu
 - [ ] Save&Load Game
 - [ ] Different Render Modes
 - [ ] Multiple Rotations at once
