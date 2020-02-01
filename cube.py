@@ -15,8 +15,8 @@ if size == 1:
 	hold = input("ENTER to close.")
 	exit()
 ##############################################
-# Nem me pergunte como isso funciona
-# Essa parte é encarregada de gerar o 'esqueleto' do cubo
+# This is just a bodge to create multiple variables without knowing how many there are beforehand
+# This part will create the 'skeleton' of the cube
 def create_row(size):
 	row = [0 for i in range(size)]
 	return row
@@ -35,7 +35,7 @@ row = dict(size)
 for i in range(size):
 	row[i] = create_row(size**2)	
 ###############################################
-def fh(choice): # Rotaciona a Face número 'choice' no sentido horário
+def fh(choice): # Rotates face numbered 'choice' clockwise
 	choice = choice - 1
 	if choice < 0:
 		print("Invalid Choice.")
@@ -59,7 +59,7 @@ def fh(choice): # Rotaciona a Face número 'choice' no sentido horário
 		j += -1
 	render()
 
-def fa(choice): # Rotaciona a Face número 'choice' no sentido anti-horário
+def fa(choice): # Rotates face numbered 'choice' anti-clockwise
 	choice = choice - 1
 	if choice < 0:
 		print("Invalid Choice.")
@@ -83,7 +83,7 @@ def fa(choice): # Rotaciona a Face número 'choice' no sentido anti-horário
 		j += -1
 	render()
 
-def ld(choice): #Mexe a linha 'choice' para a direita
+def ld(choice): # Moves line 'choice' to the right
 	choice = choice - 1
 	if choice < 0:
 		print("Invalid Choice.")
@@ -104,7 +104,7 @@ def ld(choice): #Mexe a linha 'choice' para a direita
 		k += 1
 	render()
 
-def le(choice): #Mexe a linha 'choice' para a esquerda
+def le(choice): # Moves line 'choice' to the left
 	choice = choice - 1
 	if choice < 0:
 		print("Invalid Choice.")
@@ -126,7 +126,7 @@ def le(choice): #Mexe a linha 'choice' para a esquerda
 			k += 1
 	render()
 
-def cc(choice): #Rotate a column down -> up (clockwise)
+def cc(choice): # Rotates a column down -> up (clockwise)
 	choice = choice - 1
 	if choice < 0:
 		print("Invalid Choice.")
@@ -147,7 +147,7 @@ def cc(choice): #Rotate a column down -> up (clockwise)
 			k += 1
 	render()
 
-def cb(choice): #Rotate a column up -> down (counter-clockwise)
+def cb(choice): # Rotates a column up -> down (counter-clockwise)
 	choice = choice - 1
 	if choice < 0:
 		print("Invalid Choice.")
@@ -166,7 +166,7 @@ def cb(choice): #Rotate a column up -> down (counter-clockwise)
 			row[i][choice+(size*j)] = load[j]
 	render()
 
-def render(size = size): #Renderiza os 'slices' do cubo separadamente
+def render(size = size): # Renders the 'slices' of the cube separately
 	print("\n"*5)
 	for i in range(size):
 		line = ""
@@ -179,8 +179,8 @@ def render(size = size): #Renderiza os 'slices' do cubo separadamente
 		line += " |"
 		print(line)
 ####################################################################################
-##########CONSTRUINDO O CUBO##########
-#
+##########BUILDING THE CUBE##########
+# Making use of symmetries and math to build the cube of any size
 l = size-1
 row[0][0] = "RYB"
 row[1][0] = "R_B"
@@ -260,8 +260,8 @@ for i in range(len(moves)):
 		scramble_moves.append('cb({})'.format(move_row[i]))
 print("\n"*10)
 print("Starting position is: Red Face in front, Yellow face on top")
-print("Scramble Moves: ")
-print(scramble_moves)
+#print("Scramble Moves: ")
+#print(scramble_moves)
 hold = input("Scramble Finished!")
 print("\n"*5)
 render()
