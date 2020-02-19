@@ -1,8 +1,10 @@
-class tinyCubeException(Exception): #Error Exception when the cube is too small, more for vanity than anything hihi
+import random
+
+class TinyCubeException(Exception): #Error Exception when the cube is too small, more for vanity than anything hihi
 	def __init__(self):
 		print("Cute little cube!\n")
 
-class wrongMove(Exception): #Error exception when trying to move the cube in wonky ways
+class WrongMove(Exception): #Error exception when trying to move the cube in wonky ways
 	def __init__(self):
 		print("The cube doesn't move like that, you silly!\n")
 
@@ -10,12 +12,11 @@ class Cube:
 	
 	def __init__(self, size): #Initializes and builds cube
 		if size <= 1:
-			raise tinyCubeException
+			raise TinyCubeException
 		self.size = size
 		self.pieces = []
-		
-		self.solvedState = list(self.pieces) #Saving solved state to check if cube is solved
-		self.isSolved = True
+		self.playerMoves = []
+		self.allMoves = []
 
 		#Start of cube-building process
 		#Making use of symmetries and math to build the cube of any size
@@ -65,6 +66,9 @@ class Cube:
 		self.pieces[size-1][size*2:size**2-size] = self.pieces[size-1][size:size*2]*(size-3)
 		#End of cube-building process
 
+		self.solvedState = [list(piece) for piece in self.pieces] #Saving solved state to check if cube is solved
+		self.isSolved = True
+
 	def __str__(self): #In case I want to print the object
 		msg = "This is a size {} cube"
 		return msg.format(self.size)
@@ -75,26 +79,45 @@ class Cube:
 		else:
 			return false
 
-	def render(self): # Renders the 'slices' of the cube separately
-		for i in range(self.size):
-			line = ""
-			count = 0
-			for j in self.pieces[i]:
-				if count%self.size == 0:
-					line += " |"
-				count += 1
-				line += " {}".format(j)
-			line += " |"
-			print(line)
+	def render(self, toRender): #Renders either the cube or it's logged predecessors
+		if toRender == "cube":
+			toRender = [self.pieces]
 
-	def frontClockwise(self, choice): # Rotates face number 'choice' clockwise
+		for rendering in toRender:
+			if type(rendering) is str:
+				print(rendering)
+
+			else:
+				for i in range(self.size):
+					line = ""
+					count = 0
+					for j in rendering[i]:
+						if count%self.size == 0:
+							line += " |"
+						count += 1
+						line += " {}".format(j)
+					line += " |"
+					print(line)
+			print("\n")
+
+	def checkChoice(self, choice):
 		choice = choice - 1
-		if choice < 0:
-			print("Invalid Choice.")
-			return 0
+		if choice < 0 or type(choice) is not int:
+			raise WrongMove
 		if choice >= self.size:
 			choice = choice%self.size
-		num = choice
+		return choice
+
+	def logMove(self):
+		for logList in [self.playerMoves, self.allMoves]:
+			temp = []
+			for pieces in self.pieces:
+				temp.append(list(pieces))
+			logList.append(temp)
+
+	def frontClockwise(self, choice): # Rotates face number 'choice' clockwise
+		num = self.checkChoice(choice)
+		self.logMove()
 		tb = range(num*self.size,self.size+num*self.size)
 		m = range(0,self.size)
 		t = [self.pieces[0][i] for i in tb]
@@ -111,13 +134,8 @@ class Cube:
 			j += -1
 
 	def frontAntiClockwise(self, choice): # Rotates face number 'choice' anti-clockwise
-		choice = choice - 1
-		if choice < 0:
-			print("Invalid Choice.")
-			return 0
-		if choice >= self.size:
-			choice = choice%self.size
-		num = choice
+		num = self.checkChoice(choice)
+		self.logMove()
 		tb = range(num*self.size,self.size+num*self.size)
 		m = range(0,self.size)
 		t = [self.pieces[0][i] for i in tb]
@@ -134,12 +152,8 @@ class Cube:
 			j += -1
 		
 	def horizontalRight(self, choice): # Moves line 'choice' to the right
-		choice = choice - 1
-		if choice < 0:
-			print("Invalid Choice.")
-			return 0
-		if choice >= self.size:
-			choice = choice%self.size
+		choice = self.checkChoice(choice)
+		self.logMove()
 		temps = []
 		for i in range(self.size):
 			temp2 = []
@@ -154,12 +168,8 @@ class Cube:
 			k += 1
 
 	def horizontalLeft(self, choice): # Moves line 'choice' to the left
-		choice = choice - 1
-		if choice < 0:
-			print("Invalid Choice.")
-			return 0
-		if choice >= self.size:
-			choice = choice%self.size
+		choice = self.checkChoice(choice)
+		self.logMove()
 		temps = []
 		for i in range(self.size):
 			temp2 = []
@@ -175,12 +185,8 @@ class Cube:
 				k += 1
 
 	def verticalUp(self, choice): # Rotates a column down -> up (clockwise)
-		choice = choice - 1
-		if choice < 0:
-			print("Invalid Choice.")
-			return 0
-		if choice >= self.size:
-			choice = choice%self.size
+		choice = self.checkChoice(choice)
+		self.logMove()
 		temps = []
 		for i in range(self.size):
 			temp2 = []
@@ -195,12 +201,8 @@ class Cube:
 				k += 1
 
 	def verticalDown(self, choice): # Rotates a column up -> down (counter-clockwise)
-		choice = choice - 1
-		if choice < 0:
-			print("Invalid Choice.")
-			return 0
-		if choice >= self.size:
-			choice = choice%self.size
+		choice = self.checkChoice(choice)
+		self.logMove()
 		temps = []
 		for i in range(self.size):
 			temp2 = []
@@ -211,3 +213,38 @@ class Cube:
 			load = temps[-(i+1)]
 			for j in range(self.size):
 				self.pieces[i][choice+(self.size*j)] = load[j]
+
+	def scrambleCube(self, amountOfMoves): #Scrambles the cube in a set amount of moves
+		self.isSolved = False
+		whatRotation = []
+		whereToRotate = []
+		for i in range(amountOfMoves):
+			whatRotation.append(random.randint(1,6))
+			whereToRotate.append(random.randint(1,self.size))
+		for i in range(len(whatRotation)):
+			if whatRotation[i] == 1:
+				self.frontClockwise(whereToRotate[i])
+				self.allMoves.append('frontClockwise({})'.format(whereToRotate[i]))
+			if whatRotation[i] == 2:
+				self.frontAntiClockwise(whereToRotate[i])
+				self.allMoves.append('frontAntiClockwise({})'.format(whereToRotate[i]))
+			if whatRotation[i] == 3:
+				self.horizontalRight(whereToRotate[i])
+				self.allMoves.append('horizontalRight({})'.format(whereToRotate[i]))
+			if whatRotation[i] == 4:
+				self.horizontalLeft(whereToRotate[i])
+				self.allMoves.append('horizontalLeft({})'.format(whereToRotate[i]))
+			if whatRotation[i] == 5:
+				self.verticalDown(whereToRotate[i])
+				self.allMoves.append('verticalDown({})'.format(whereToRotate[i]))
+			if whatRotation[i] == 6:
+				self.verticalUp(whereToRotate[i])
+				self.allMoves.append('verticalUp({})'.format(whereToRotate[i]))
+			del self.playerMoves[-1]
+
+	def checkIfSolved(self):
+		if self.pieces == self.solvedState:
+			self.isSolved = True
+			print("Cube Solved!")
+		else:
+			print("Keep Trying!")
