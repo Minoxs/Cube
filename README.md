@@ -29,8 +29,9 @@ I might add an explanation of how the rotations translate into text later, might
 -Column Down-Up: <b>cc(<i>column_number</i>)</b>   
    
 # To-Be-Added:
-- [ ] Remaking cube as proper object
-- [ ] GUI?!
+- [x] Remaking cube as proper object
+- [ ] Standard User Interface (?)
+- [ ] Graphical User Interface (?)
 - [ ] Start Menu
 - [ ] Save&Load Game
 - [ ] Different Render Modes
