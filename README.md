@@ -1,8 +1,12 @@
-# Text Rubik's Cube V.1
+# Remake Branch
+Most things might not even work here :)   
+Remaking the cube with better code, mainly just rewritting it in a proper object oriented way.
+
+# Text Rubik's Cube REBORN
 <b>It goes up to any size, although it requires quite a bit of horizontal screen space.</b>   
 I might add an explanation of how the rotations translate into text later, might not /shrug.   
-##### Stable Branch    
    
+### Everything is now subject to change! :D
 # Standard Rotations   
 <img src="https://blog.rubiks.com/wp-content/uploads/2018/08/how-to-solve-cube-formula.png"></img>
 #### Source: https://www.rubiks.com/en-us/blog/how-to-solve-the-rubiks-cube-stage-1 
@@ -25,11 +29,12 @@ I might add an explanation of how the rotations translate into text later, might
 -Column Down-Up: <b>cc(<i>column_number</i>)</b>   
    
 # To-Be-Added:
+- [ ] Remaking cube as proper object
+- [ ] GUI?!
 - [ ] Start Menu
 - [ ] Save&Load Game
 - [ ] Different Render Modes
-- [ ] Multiple Rotations at once
 - [ ] Moves log (?)
 - [ ] Show&Load scramble seed
     
-#### Feel free to make sugestions and criticism :)
+##### Feel free to make suggestions and criticism :)
