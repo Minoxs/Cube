@@ -79,7 +79,7 @@ class Cube:
 		else:
 			return false
 
-	def render(self, toRender): #Renders either the cube or it's logged predecessors
+	def render(self, toRender): #Renders either the cube or its logged predecessors
 		if toRender == "cube":
 			toRender = [self.pieces]
 
@@ -100,7 +100,7 @@ class Cube:
 					print(line)
 			print("\n")
 
-	def checkChoice(self, choice):
+	def checkChoice(self, choice): #For every rotation I need to check if input is valid, so I made a method for it
 		choice = choice - 1
 		if choice < 0 or type(choice) is not int:
 			raise WrongMove
@@ -108,7 +108,7 @@ class Cube:
 			choice = choice%self.size
 		return choice
 
-	def logMove(self):
+	def logMove(self): #For every rotation, I create a log of how the cube was before :)
 		for logList in [self.playerMoves, self.allMoves]:
 			temp = []
 			for pieces in self.pieces:
@@ -242,7 +242,7 @@ class Cube:
 				self.allMoves.append('verticalUp({})'.format(whereToRotate[i]))
 			del self.playerMoves[-1]
 
-	def checkIfSolved(self):
+	def checkIfSolved(self): #Method to check if cube has been solved
 		if self.pieces == self.solvedState:
 			self.isSolved = True
 			print("Cube Solved!")
