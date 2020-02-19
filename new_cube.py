@@ -1,267 +1,213 @@
-#Initial Setup and Useful Info
-import random
-size = 0
-while size < 1:
-	size_start = input("Cube Size: ")
-	try:
-		size = int(size_start)
-	except:
-		size_start = input("Cube Size: ")
-############################################## 
-#Special Size Case
-if size == 1:
-	print("Cute little cube!")
-	print("Already finished, congratulations :)")
-	hold = input("ENTER to close.")
-	exit()
-##############################################
-# This is just a bodge to create multiple variables without knowing how many there are beforehand
-# This part will create the 'skeleton' of the cube
-def create_row(size):
-	row = [0 for i in range(size)]
-	return row
+class tinyCubeException(Exception): #Error Exception when the cube is too small, more for vanity than anything hihi
+	def __init__(self):
+		print("Cute little cube!\n")
 
-def row_nums(size):
-	row_n = [i for i in range(size)]
-	a = zip(row_n,row_n)
-	return a
+class wrongMove(Exception): #Error exception when trying to move the cube in wonky ways
+	def __init__(self):
+		print("The cube doesn't move like that, you silly!\n")
 
-def dict(size):
-	lst = row_nums(size)
-	rows = {row:wor for row, wor in lst}
-	return rows
-
-row = dict(size)
-for i in range(size):
-	row[i] = create_row(size**2)	
-###############################################
-def fh(choice): # Rotates face numbered 'choice' clockwise
-	choice = choice - 1
-	if choice < 0:
-		print("Invalid Choice.")
-		return 0
-	if choice >= size:
-		choice = choice%size
-	num = choice
-	tb = range(num*size,size+num*size)
-	m = range(0,size)
-	t = [row[0][i] for i in tb]
-	l = [row[i][num*size] for i in m]
-	r = [row[i][size-1+num*size] for i in m]
-	b = [row[size-1][i] for i in tb]
+class Cube:
 	
-	j = -1
-	for i in range(len(t)):
-		row[m[i]][size-1+num*size] = t[i]
-		row[size-1][tb[i]] = r[j]
-		row[m[i]][num*size] = b[i]
-		row[0][tb[i]] = l[j]
-		j += -1
-	render()
+	def __init__(self, size): #Initializes and builds cube
+		if size <= 1:
+			raise tinyCubeException
+		self.size = size
+		self.pieces = []
+		
+		self.solvedState = list(self.pieces) #Saving solved state to check if cube is solved
+		self.isSolved = True
 
-def fa(choice): # Rotates face numbered 'choice' anti-clockwise
-	choice = choice - 1
-	if choice < 0:
-		print("Invalid Choice.")
-		return 0
-	if choice >= size:
-		choice = choice%size
-	num = choice
-	tb = range(num*size,size+num*size)
-	m = range(0,size)
-	t = [row[0][i] for i in tb]
-	l = [row[i][num*size] for i in m]
-	r = [row[i][size-1+num*size] for i in m]
-	b = [row[size-1][i] for i in tb]
+		#Start of cube-building process
+		#Making use of symmetries and math to build the cube of any size
+		for i in range(size):
+			row = [0 for j in range(size**2)]
+			self.pieces.append(row)
 
-	j = -1
-	for i in range(len(t)):
-		row[m[i]][size-1+num*size] = b[j]
-		row[size-1][tb[i]] = l[i]
-		row[m[i]][num*size] = t[j]
-		row[0][tb[i]] = r[i]
-		j += -1
-	render()
+		l = size-1
+		self.pieces[0][0] = "RYB"
+		self.pieces[1][0] = "R_B"
+		self.pieces[l][0] = "RWB"
+		for i in range(1,size-1):
+			self.pieces[0][i] = "R_Y"
+			self.pieces[1][i] = "_R_"
+			self.pieces[l][i] = "R_W"
+		self.pieces[0][size-1] = "RYG"
+		self.pieces[1][size-1] = "R_G"
+		self.pieces[l][size-1] = "RWG"
+		self.pieces[0][size] = "Y_B"
+		self.pieces[1][size] = "_B_"
+		self.pieces[l][size] = "W_B"
+		for i in range(size+1,size*2):
+			self.pieces[0][i] = "_Y_"
+			self.pieces[1][i] = "000"
+			self.pieces[l][i] = "_W_"
+		self.pieces[0][size*2-1] = "Y_G"
+		self.pieces[1][size*2-1] = "_G_"
+		self.pieces[l][size*2-1] = "W_G"
+		self.pieces[0][size**2-size] = "OYB"
+		self.pieces[1][size**2-size] = "O_B"
+		self.pieces[l][size**2-size] = "OWB"
+		for i in range(size**2-size+1,size**2):
+			self.pieces[0][i] = "O_Y"
+			self.pieces[1][i] = "_O_"
+			self.pieces[l][i] = "O_W"
+		self.pieces[0][size**2-1] = "OYG"
+		self.pieces[1][size**2-1] = "O_G"
+		self.pieces[l][size**2-1] = "OWG"
+		self.pieces[0][size*2:size**2-size] = self.pieces[0][size:size*2]*(size-3)
+		self.pieces[1][size*2:size**2-size] = self.pieces[1][size:size*2]*(size-3)
+		self.pieces[l][size*2:size**2-size] = self.pieces[l][size:size*2]*(size-3)
+		for i in range(2,size-1):
+			k = 0
+			for c in self.pieces[1]:
+				self.pieces[i][k] = c
+				k += 1
+		self.pieces[size-1][size*2:size**2-size] = self.pieces[size-1][size:size*2]*(size-3)
+		#End of cube-building process
 
-def ld(choice): # Moves line 'choice' to the right
-	choice = choice - 1
-	if choice < 0:
-		print("Invalid Choice.")
-		return 0
-	if choice >= size:
-		choice = choice%size
-	temps = []
-	for i in range(size):
-		temp2 = []
-		for j in range(size):
-			temp2.append(row[choice][j+(i*size)])
-		temps.append(temp2)
-	k = 0
-	for i in range(size):
-		load = temps[i]
-		for j in range(size):
-			row[choice][(size-1)+(j*size)-k] = load[j]
-		k += 1
-	render()
+	def __str__(self): #In case I want to print the object
+		msg = "This is a size {} cube"
+		return msg.format(self.size)
 
-def le(choice): # Moves line 'choice' to the left
-	choice = choice - 1
-	if choice < 0:
-		print("Invalid Choice.")
-		return 0
-	if choice >= size:
-		choice = choice%size
-	temps = []
-	for i in range(size):
-		temp2 = []
-		for j in range(size):
-			temp2.append(row[choice][j+(i*size)])
-		temps.append(temp2)
-	
-	for i in range(size):
-		load = temps[i]
-		k = 1
-		for j in range(size):
-			row[choice][(j*size)+i] = load[-k]
+	def __eq__(self, other): #A way of comparing if two cubes are the same :)
+		if isinstance(other, Cube):
+			return self.pieces == other.pieces
+		else:
+			return false
+
+	def render(self): # Renders the 'slices' of the cube separately
+		for i in range(self.size):
+			line = ""
+			count = 0
+			for j in self.pieces[i]:
+				if count%self.size == 0:
+					line += " |"
+				count += 1
+				line += " {}".format(j)
+			line += " |"
+			print(line)
+
+	def frontClockwise(self, choice): # Rotates face number 'choice' clockwise
+		choice = choice - 1
+		if choice < 0:
+			print("Invalid Choice.")
+			return 0
+		if choice >= self.size:
+			choice = choice%self.size
+		num = choice
+		tb = range(num*self.size,self.size+num*self.size)
+		m = range(0,self.size)
+		t = [self.pieces[0][i] for i in tb]
+		l = [self.pieces[i][num*self.size] for i in m]
+		r = [self.pieces[i][self.size-1+num*self.size] for i in m]
+		b = [self.pieces[self.size-1][i] for i in tb]
+		
+		j = -1
+		for i in range(len(t)):
+			self.pieces[m[i]][self.size-1+num*self.size] = t[i]
+			self.pieces[self.size-1][tb[i]] = r[j]
+			self.pieces[m[i]][num*self.size] = b[i]
+			self.pieces[0][tb[i]] = l[j]
+			j += -1
+
+	def frontAntiClockwise(self, choice): # Rotates face number 'choice' anti-clockwise
+		choice = choice - 1
+		if choice < 0:
+			print("Invalid Choice.")
+			return 0
+		if choice >= self.size:
+			choice = choice%self.size
+		num = choice
+		tb = range(num*self.size,self.size+num*self.size)
+		m = range(0,self.size)
+		t = [self.pieces[0][i] for i in tb]
+		l = [self.pieces[i][num*self.size] for i in m]
+		r = [self.pieces[i][self.size-1+num*self.size] for i in m]
+		b = [self.pieces[self.size-1][i] for i in tb]
+
+		j = -1
+		for i in range(len(t)):
+			self.pieces[m[i]][self.size-1+num*self.size] = b[j]
+			self.pieces[self.size-1][tb[i]] = l[i]
+			self.pieces[m[i]][num*self.size] = t[j]
+			self.pieces[0][tb[i]] = r[i]
+			j += -1
+		
+	def horizontalRight(self, choice): # Moves line 'choice' to the right
+		choice = choice - 1
+		if choice < 0:
+			print("Invalid Choice.")
+			return 0
+		if choice >= self.size:
+			choice = choice%self.size
+		temps = []
+		for i in range(self.size):
+			temp2 = []
+			for j in range(self.size):
+				temp2.append(self.pieces[choice][j+(i*self.size)])
+			temps.append(temp2)
+		k = 0
+		for i in range(self.size):
+			load = temps[i]
+			for j in range(self.size):
+				self.pieces[choice][(self.size-1)+(j*self.size)-k] = load[j]
 			k += 1
-	render()
 
-def cc(choice): # Rotates a column down -> up (clockwise)
-	choice = choice - 1
-	if choice < 0:
-		print("Invalid Choice.")
-		return 0
-	if choice >= size:
-		choice = choice%size
-	temps = []
-	for i in range(size):
-		temp2 = []
-		for j in range(size):
-			temp2.append(row[j][(choice)+(size*i)])
-		temps.append(temp2)
-	for i in range(size):
-		k = 1
-		load = temps[i]
-		for j in range(size):
-			row[i][choice+(size*j)] = load[-k]
-			k += 1
-	render()
+	def horizontalLeft(self, choice): # Moves line 'choice' to the left
+		choice = choice - 1
+		if choice < 0:
+			print("Invalid Choice.")
+			return 0
+		if choice >= self.size:
+			choice = choice%self.size
+		temps = []
+		for i in range(self.size):
+			temp2 = []
+			for j in range(self.size):
+				temp2.append(self.pieces[choice][j+(i*self.size)])
+			temps.append(temp2)
+		
+		for i in range(self.size):
+			load = temps[i]
+			k = 1
+			for j in range(self.size):
+				self.pieces[choice][(j*self.size)+i] = load[-k]
+				k += 1
 
-def cb(choice): # Rotates a column up -> down (counter-clockwise)
-	choice = choice - 1
-	if choice < 0:
-		print("Invalid Choice.")
-		return 0
-	if choice >= size:
-		choice = choice%size
-	temps = []
-	for i in range(size):
-		temp2 = []
-		for j in range(size):
-			temp2.append(row[j][(choice)+(size*i)])
-		temps.append(temp2)
-	for i in range(size):
-		load = temps[-(i+1)]
-		for j in range(size):
-			row[i][choice+(size*j)] = load[j]
-	render()
+	def verticalUp(self, choice): # Rotates a column down -> up (clockwise)
+		choice = choice - 1
+		if choice < 0:
+			print("Invalid Choice.")
+			return 0
+		if choice >= self.size:
+			choice = choice%self.size
+		temps = []
+		for i in range(self.size):
+			temp2 = []
+			for j in range(self.size):
+				temp2.append(self.pieces[j][(choice)+(self.size*i)])
+			temps.append(temp2)
+		for i in range(self.size):
+			k = 1
+			load = temps[i]
+			for j in range(self.size):
+				self.pieces[i][choice+(self.size*j)] = load[-k]
+				k += 1
 
-def render(size = size): # Renders the 'slices' of the cube separately
-	print("\n"*5)
-	for i in range(size):
-		line = ""
-		count = 0
-		for j in row[i]:
-			if count%size == 0:
-				line += " |"
-			count += 1
-			line += " {}".format(j)
-		line += " |"
-		print(line)
-####################################################################################
-##########BUILDING THE CUBE##########
-# Making use of symmetries and math to build the cube of any size
-l = size-1
-row[0][0] = "RYB"
-row[1][0] = "R_B"
-row[l][0] = "RWB"
-for i in range(1,size-1):
-	row[0][i] = "R_Y"
-	row[1][i] = "_R_"
-	row[l][i] = "R_W"
-row[0][size-1] = "RYG"
-row[1][size-1] = "R_G"
-row[l][size-1] = "RWG"
-row[0][size] = "Y_B"
-row[1][size] = "_B_"
-row[l][size] = "W_B"
-for i in range(size+1,size*2):
-	row[0][i] = "_Y_"
-	row[1][i] = "000"
-	row[l][i] = "_W_"
-row[0][size*2-1] = "Y_G"
-row[1][size*2-1] = "_G_"
-row[l][size*2-1] = "W_G"
-row[0][size**2-size] = "OYB"
-row[1][size**2-size] = "O_B"
-row[l][size**2-size] = "OWB"
-for i in range(size**2-size+1,size**2):
-	row[0][i] = "O_Y"
-	row[1][i] = "_O_"
-	row[l][i] = "O_W"
-row[0][size**2-1] = "OYG"
-row[1][size**2-1] = "O_G"
-row[l][size**2-1] = "OWG"
-row[0][size*2:size**2-size] = row[0][size:size*2]*(size-3)
-row[1][size*2:size**2-size] = row[1][size:size*2]*(size-3)
-row[l][size*2:size**2-size] = row[l][size:size*2]*(size-3)
-for i in range(2,size-1):
-	k = 0
-	for c in row[1]:
-		row[i][k] = c
-		k += 1
-row[size-1][size*2:size**2-size] = row[size-1][size:size*2]*(size-3)
-#
-render()
-###########################################################################
-# Saving solved cube
-solved = []
-for i in range(size):
-	for j in range(size**2):
-		solved.append(row[i][j])
-###########################################################################
-###########################################################################
-scramble_moves = []
-# Scrambling Cube
-hold = input("Starting Scramble...")
-moves = []
-move_row = []
-for i in range(size**3):
-	moves.append(random.randint(1,6))
-	move_row.append(random.randint(1,size))
-for i in range(len(moves)):
-	if moves[i] == 1:
-		fh(move_row[i])
-		scramble_moves.append('fh({})'.format(move_row[i]))
-	if moves[i] == 2:
-		fa(move_row[i])
-		scramble_moves.append('fa({})'.format(move_row[i]))
-	if moves[i] == 3:
-		le(move_row[i])
-		scramble_moves.append('le({})'.format(move_row[i]))
-	if moves[i] == 4:
-		ld(move_row[i])
-		scramble_moves.append('ld({})'.format(move_row[i]))
-	if moves[i] == 5:
-		cc(move_row[i])
-		scramble_moves.append('cc({})'.format(move_row[i]))
-	if moves[i] == 6:
-		cb(move_row[i])
-		scramble_moves.append('cb({})'.format(move_row[i]))
-print("\n"*10)
-print("Starting position is: Red Face in front, Yellow face on top")
-#print("Scramble Moves: ")
-#print(scramble_moves)
-hold = input("Scramble Finished!")
-print("\n"*5)
-render()
+	def verticalDown(self, choice): # Rotates a column up -> down (counter-clockwise)
+		choice = choice - 1
+		if choice < 0:
+			print("Invalid Choice.")
+			return 0
+		if choice >= self.size:
+			choice = choice%self.size
+		temps = []
+		for i in range(self.size):
+			temp2 = []
+			for j in range(self.size):
+				temp2.append(self.pieces[j][(choice)+(self.size*i)])
+			temps.append(temp2)
+		for i in range(self.size):
+			load = temps[-(i+1)]
+			for j in range(self.size):
+				self.pieces[i][choice+(self.size*j)] = load[j]
