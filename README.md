@@ -1,8 +1,7 @@
-# Remake Branch
-Most things might not even work here :)   
-Remaking the cube with better code, mainly just rewritting it in a proper object oriented way.
+# Test Branch
+Most things might not even work here :)
 
-# Text Rubik's Cube REBORN
+# Text Rubik's Cube REBORN V1-Alpha
 <b>It goes up to any size, although it requires quite a bit of horizontal screen space.</b>   
 I might add an explanation of how the rotations translate into text later, might not /shrug.   
    
@@ -30,12 +29,13 @@ I might add an explanation of how the rotations translate into text later, might
    
 # To-Be-Added:
 - [x] Remaking cube as proper object
+- [ ] Make REBORN V1 playable
 - [ ] Standard User Interface (?)
 - [ ] Graphical User Interface (?)
 - [ ] Start Menu
 - [ ] Save&Load Game
 - [ ] Different Render Modes
-- [ ] Moves log (?)
+- [ ] Moves log!
 - [ ] Show&Load scramble seed
     
 ##### Feel free to make suggestions and criticism :)
