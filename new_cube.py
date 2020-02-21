@@ -48,7 +48,7 @@ class Cube:
 			self.pieces[l][size] = "W_B"
 			for i in range(size+1,size*2):
 				self.pieces[0][i] = "_Y_"
-				self.pieces[1][i] = "000"
+				self.pieces[1][i] = "   "
 				self.pieces[l][i] = "_W_"
 			self.pieces[0][size*2-1] = "Y_G"
 			self.pieces[1][size*2-1] = "_G_"
@@ -87,11 +87,12 @@ class Cube:
 		else:
 			return false
 
-	def __hash__(self):
+	def __hash__(self): #Gives every cube object a unique integer value, used for error-checking and file editing when Loading
+
 		components = str(self.getComponents()).encode('UTF-8')
 		cubeHash = hashlib.md5(components).hexdigest()
-		return int(cubeHash, 16) #Gives every cube object a unique integer value, used for error-checking and file editing when Loading
-
+		return int(cubeHash, 16) 
+	
 	def getComponents(self): #Getter for all info on the cube
 		components = [
 		self.size,
@@ -169,7 +170,7 @@ class Cube:
 			choice = choice%self.size
 		return choice
 
-	def frontClockwise(self, choice): # Rotates face number 'choice' clockwise
+	def frontClockwise(self, choice): #Rotates face number 'choice' clockwise
 		num = self.checkChoice(choice)
 		self.logMove()
 		tb = range(num*self.size,self.size+num*self.size)
@@ -187,7 +188,7 @@ class Cube:
 			self.pieces[0][tb[i]] = l[j]
 			j += -1
 
-	def frontAntiClockwise(self, choice): # Rotates face number 'choice' anti-clockwise
+	def frontAntiClockwise(self, choice): #Rotates face number 'choice' anti-clockwise
 		num = self.checkChoice(choice)
 		self.logMove()
 		tb = range(num*self.size,self.size+num*self.size)
@@ -205,7 +206,7 @@ class Cube:
 			self.pieces[0][tb[i]] = r[i]
 			j += -1
 		
-	def horizontalRight(self, choice): # Moves line 'choice' to the right
+	def horizontalRight(self, choice): #Moves line 'choice' to the right
 		choice = self.checkChoice(choice)
 		self.logMove()
 		temps = []
@@ -221,7 +222,7 @@ class Cube:
 				self.pieces[choice][(self.size-1)+(j*self.size)-k] = load[j]
 			k += 1
 
-	def horizontalLeft(self, choice): # Moves line 'choice' to the left
+	def horizontalLeft(self, choice): #Moves line 'choice' to the left
 		choice = self.checkChoice(choice)
 		self.logMove()
 		temps = []
@@ -238,7 +239,7 @@ class Cube:
 				self.pieces[choice][(j*self.size)+i] = load[-k]
 				k += 1
 
-	def verticalUp(self, choice): # Rotates a column down -> up (clockwise)
+	def verticalUp(self, choice): #Rotates a column down -> up (clockwise)
 		choice = self.checkChoice(choice)
 		self.logMove()
 		temps = []
@@ -254,7 +255,7 @@ class Cube:
 				self.pieces[i][choice+(self.size*j)] = load[-k]
 				k += 1
 
-	def verticalDown(self, choice): # Rotates a column up -> down (counter-clockwise)
+	def verticalDown(self, choice): #Rotates a column up -> down (counter-clockwise)
 		choice = self.checkChoice(choice)
 		self.logMove()
 		temps = []
@@ -267,6 +268,22 @@ class Cube:
 			load = temps[-(i+1)]
 			for j in range(self.size):
 				self.pieces[i][choice+(self.size*j)] = load[j]
+
+	def xAxisRotationDown(self):
+		for i in range(self.size):
+			self.verticalDown(i+1) #Rotates the entire cube down
+
+	def xAxisRotationUp(self):
+		for i in range(self.size):
+			self.verticalUp(i+1) #Rotates the entire cube up
+
+	def yAxisRotationRight(self):
+		for i in range(self.size):
+			self.horizontalRight(i+1) #Rotates the entire cube to the right
+
+	def yAxisRotationLeft(self):
+		for i in range(self.size):
+			self.horizontalLeft(i+1) #Rotates the entire cube to the left
 
 	def scrambleCube(self, amountOfMoves, randomSeed = True): #Scrambles the cube in a set amount of moves
 		self.isSolved = False
