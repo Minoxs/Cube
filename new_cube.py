@@ -1,12 +1,12 @@
 import random
 import hashlib
 
-class InvalidCubeHash(Exception):
+class InvalidCubeHash(Exception): #Exception when the cube hash is invalid
 	def __init__(self):
 		print("Loaded cube has invalid hash")
-		print("Cube might be corrupted") #Exception when the cube hash is invalid
+		print("Cube might be corrupted") 
 
-class TinyCubeException(Exception): #Error Exception when the cube is too small, more for vanity than anything hihi
+class TinyCubeException(Exception): #Error Exception when the cube is too small, might be useful for bugfixing later
 	def __init__(self):
 		print("Cute little cube!\n")
 
@@ -78,8 +78,11 @@ class Cube:
 			#End of cube-building process
 
 	def __str__(self): #In case I want to print the object
-		msg = "This is a size {} cube"
-		return msg.format(self.size)
+		msg = "This is a size {} cube, Hash #{}, {}"
+		if self.isSolved:
+			return msg.format(self.size, hash(self), "Solved")
+		else:
+			return msg.format(self.size, hash(self), "Unsolved")
 
 	def __eq__(self, other): #A way of comparing if two cubes are the same :)
 		if isinstance(other, Cube):
@@ -88,7 +91,6 @@ class Cube:
 			return false
 
 	def __hash__(self): #Gives every cube object a unique integer value, used for error-checking and file editing when Loading
-
 		components = str(self.getComponents()).encode('UTF-8')
 		cubeHash = hashlib.md5(components).hexdigest()
 		return int(cubeHash, 16) 
@@ -134,7 +136,7 @@ class Cube:
 
 		return tempObject
 
-	def render(self, toRender, mode = 1): #Renders either the cube or its logged predecessors
+	def render(self, toRender = "cube"): #Renders either the cube or its logged predecessors
 		if toRender == "cube":
 			toRender = [self.pieces]
 		
@@ -269,21 +271,21 @@ class Cube:
 			for j in range(self.size):
 				self.pieces[i][choice+(self.size*j)] = load[j]
 
-	def xAxisRotationDown(self):
+	def xAxisRotationDown(self): #Rotates the entire cube down
 		for i in range(self.size):
-			self.verticalDown(i+1) #Rotates the entire cube down
+			self.verticalDown(i+1) 
 
-	def xAxisRotationUp(self):
+	def xAxisRotationUp(self): #Rotates the entire cube up
 		for i in range(self.size):
-			self.verticalUp(i+1) #Rotates the entire cube up
+			self.verticalUp(i+1) 
 
-	def yAxisRotationRight(self):
+	def yAxisRotationRight(self): #Rotates the entire cube to the right
 		for i in range(self.size):
-			self.horizontalRight(i+1) #Rotates the entire cube to the right
+			self.horizontalRight(i+1) 
 
-	def yAxisRotationLeft(self):
+	def yAxisRotationLeft(self): #Rotates the entire cube to the left
 		for i in range(self.size):
-			self.horizontalLeft(i+1) #Rotates the entire cube to the left
+			self.horizontalLeft(i+1) 
 
 	def scrambleCube(self, amountOfMoves, randomSeed = True): #Scrambles the cube in a set amount of moves
 		self.isSolved = False
@@ -323,6 +325,7 @@ class Cube:
 			del self.playerMoves[-1]
 
 		self.scrambleSeeds.append([amountOfMoves, seed])
+		return (amountOfMoves,seed)
 
 	def checkIfSolved(self): #Method to check if cube has been solved
 		if self.pieces == self.solvedState:
@@ -332,7 +335,3 @@ class Cube:
 		else:
 			print("Keep Trying!")
 			return False
-
-a = Cube(3)
-a.render("cube")
-
