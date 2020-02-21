@@ -21,57 +21,59 @@ class Cube:
 		self.pieces = []
 		self.playerMoves = []
 		self.allMoves = []
+		self.scrambleSeeds = []
 
-		#Start of cube-building process
-		#Making use of symmetries and math to build the cube of any size
-		for i in range(size):
-			row = [0 for j in range(size**2)]
-			self.pieces.append(row)
+		if doBuildCube:
+			#Start of cube-building process
+			#Making use of symmetries and math to build the cube of any size
+			for i in range(size):
+				row = [0 for j in range(size**2)]
+				self.pieces.append(row)
 
-		l = size-1
-		self.pieces[0][0] = "RYB"
-		self.pieces[1][0] = "R_B"
-		self.pieces[l][0] = "RWB"
-		for i in range(1,size-1):
-			self.pieces[0][i] = "R_Y"
-			self.pieces[1][i] = "_R_"
-			self.pieces[l][i] = "R_W"
-		self.pieces[0][size-1] = "RYG"
-		self.pieces[1][size-1] = "R_G"
-		self.pieces[l][size-1] = "RWG"
-		self.pieces[0][size] = "Y_B"
-		self.pieces[1][size] = "_B_"
-		self.pieces[l][size] = "W_B"
-		for i in range(size+1,size*2):
-			self.pieces[0][i] = "_Y_"
-			self.pieces[1][i] = "000"
-			self.pieces[l][i] = "_W_"
-		self.pieces[0][size*2-1] = "Y_G"
-		self.pieces[1][size*2-1] = "_G_"
-		self.pieces[l][size*2-1] = "W_G"
-		self.pieces[0][size**2-size] = "OYB"
-		self.pieces[1][size**2-size] = "O_B"
-		self.pieces[l][size**2-size] = "OWB"
-		for i in range(size**2-size+1,size**2):
-			self.pieces[0][i] = "O_Y"
-			self.pieces[1][i] = "_O_"
-			self.pieces[l][i] = "O_W"
-		self.pieces[0][size**2-1] = "OYG"
-		self.pieces[1][size**2-1] = "O_G"
-		self.pieces[l][size**2-1] = "OWG"
-		self.pieces[0][size*2:size**2-size] = self.pieces[0][size:size*2]*(size-3)
-		self.pieces[1][size*2:size**2-size] = self.pieces[1][size:size*2]*(size-3)
-		self.pieces[l][size*2:size**2-size] = self.pieces[l][size:size*2]*(size-3)
-		for i in range(2,size-1):
-			k = 0
-			for c in self.pieces[1]:
-				self.pieces[i][k] = c
-				k += 1
-		self.pieces[size-1][size*2:size**2-size] = self.pieces[size-1][size:size*2]*(size-3)
-		#End of cube-building process
-
-		self.solvedState = [list(piece) for piece in self.pieces] #Saving solved state to check if cube is solved
-		self.isSolved = True
+			l = size-1
+			self.pieces[0][0] = "RYB"
+			self.pieces[1][0] = "R_B"
+			self.pieces[l][0] = "RWB"
+			for i in range(1,size-1):
+				self.pieces[0][i] = "R_Y"
+				self.pieces[1][i] = "_R_"
+				self.pieces[l][i] = "R_W"
+			self.pieces[0][size-1] = "RYG"
+			self.pieces[1][size-1] = "R_G"
+			self.pieces[l][size-1] = "RWG"
+			self.pieces[0][size] = "Y_B"
+			self.pieces[1][size] = "_B_"
+			self.pieces[l][size] = "W_B"
+			for i in range(size+1,size*2):
+				self.pieces[0][i] = "_Y_"
+				self.pieces[1][i] = "000"
+				self.pieces[l][i] = "_W_"
+			self.pieces[0][size*2-1] = "Y_G"
+			self.pieces[1][size*2-1] = "_G_"
+			self.pieces[l][size*2-1] = "W_G"
+			self.pieces[0][size**2-size] = "OYB"
+			self.pieces[1][size**2-size] = "O_B"
+			self.pieces[l][size**2-size] = "OWB"
+			for i in range(size**2-size+1,size**2):
+				self.pieces[0][i] = "O_Y"
+				self.pieces[1][i] = "_O_"
+				self.pieces[l][i] = "O_W"
+			self.pieces[0][size**2-1] = "OYG"
+			self.pieces[1][size**2-1] = "O_G"
+			self.pieces[l][size**2-1] = "OWG"
+			self.pieces[0][size*2:size**2-size] = self.pieces[0][size:size*2]*(size-3)
+			self.pieces[1][size*2:size**2-size] = self.pieces[1][size:size*2]*(size-3)
+			self.pieces[l][size*2:size**2-size] = self.pieces[l][size:size*2]*(size-3)
+			for i in range(2,size-1):
+				k = 0
+				for c in self.pieces[1]:
+					self.pieces[i][k] = c
+					k += 1
+			self.pieces[size-1][size*2:size**2-size] = self.pieces[size-1][size:size*2]*(size-3)
+			
+			self.solvedState = [list(piece) for piece in self.pieces] #Saving solved state to check if cube is solved
+			self.isSolved = True
+			#End of cube-building process
 
 	def __str__(self): #In case I want to print the object
 		msg = "This is a size {} cube"
@@ -83,25 +85,39 @@ class Cube:
 		else:
 			return false
 
-	def save(self):
+	def save(self): #Saves a list with all the components necessary to reload the cube
 		components = [
 		self.size,
 		self.pieces,
 		self.playerMoves,
 		self.allMoves,
 		self.solvedState,
-		self.isSolved
+		self.isSolved,
+		self.scrambleSeeds
 		]
 		return components
 
-	def load(cubeComponentList):
-		try:
-			cubeComponentList = list(cubeComponentList)
+	def load(cubeComponentList): #Input is the component LIST of the cube, in order
+		if type(cubeComponentList) is not list:
+			raise TypeError
+
+		tempObject = Cube(cubeComponentList[0], False)
+		tempObject.pieces        = cubeComponentList[1]
+		tempObject.playerMoves   = cubeComponentList[2]
+		tempObject.allMoves      = cubeComponentList[3]
+		tempObject.solvedState   = cubeComponentList[4]
+		tempObject.isSolved      = cubeComponentList[5]
+		tempObject.scrambleSeeds = cubeComponentList[6]
+
+		return tempObject
+
+	def getLogs(self): #Getter for the move logs of the cube
+		return [self.playerMoves, self.allMoves]
 
 	def render(self, toRender, mode = 1): #Renders either the cube or its logged predecessors
 		if toRender == "cube":
 			toRender = [self.pieces]
-		print(mode)
+		
 		for rendering in toRender:
 			if type(rendering) is str:
 				print(rendering)
@@ -233,8 +249,17 @@ class Cube:
 			for j in range(self.size):
 				self.pieces[i][choice+(self.size*j)] = load[j]
 
-	def scrambleCube(self, amountOfMoves): #Scrambles the cube in a set amount of moves
+	def scrambleCube(self, amountOfMoves, randomSeed = True): #Scrambles the cube in a set amount of moves
 		self.isSolved = False
+		
+		if type(randomSeed) is bool: #A second argument can be used to load a specifif seed for scrambling;
+			random.seed()			 #That's a quick way to scramble the cube in the exact same way - good for practice
+			seed = random.randrange(0,2 ** 16)
+		else:
+			seed = randomSeed
+
+		random.seed(seed)
+
 		whatRotation = []
 		whereToRotate = []
 		for i in range(amountOfMoves):
@@ -261,12 +286,26 @@ class Cube:
 				self.allMoves.append('verticalUp({})'.format(whereToRotate[i]))
 			del self.playerMoves[-1]
 
+		self.scrambleSeeds.append([amountOfMoves, seed])
+
 	def checkIfSolved(self): #Method to check if cube has been solved
 		if self.pieces == self.solvedState:
 			self.isSolved = True
 			print("Cube Solved!")
+			return True
 		else:
 			print("Keep Trying!")
+			return False
 
 a = Cube(3)
 a.render("cube")
+
+a.scrambleCube(1)
+a.scrambleCube(1)
+a.scrambleCube(1, 10)
+a.scrambleCube(1)
+
+a.render("cube")
+
+cubeSave = a.save()
+print(cubeSave[6])
