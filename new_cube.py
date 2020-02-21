@@ -1,5 +1,9 @@
 import random
 
+class InvalidCube(Exception):
+	def __init__(self):
+		print("TBA?")
+
 class TinyCubeException(Exception): #Error Exception when the cube is too small, more for vanity than anything hihi
 	def __init__(self):
 		print("Cute little cube!\n")
@@ -10,7 +14,7 @@ class WrongMove(Exception): #Error exception when trying to move the cube in won
 
 class Cube:
 	
-	def __init__(self, size): #Initializes and builds cube
+	def __init__(self, size, doBuildCube = True): #Initializes and builds cube
 		if size <= 1:
 			raise TinyCubeException
 		self.size = size
@@ -79,10 +83,25 @@ class Cube:
 		else:
 			return false
 
-	def render(self, toRender): #Renders either the cube or its logged predecessors
+	def save(self):
+		components = [
+		self.size,
+		self.pieces,
+		self.playerMoves,
+		self.allMoves,
+		self.solvedState,
+		self.isSolved
+		]
+		return components
+
+	def load(cubeComponentList):
+		try:
+			cubeComponentList = list(cubeComponentList)
+
+	def render(self, toRender, mode = 1): #Renders either the cube or its logged predecessors
 		if toRender == "cube":
 			toRender = [self.pieces]
-
+		print(mode)
 		for rendering in toRender:
 			if type(rendering) is str:
 				print(rendering)
@@ -248,3 +267,6 @@ class Cube:
 			print("Cube Solved!")
 		else:
 			print("Keep Trying!")
+
+a = Cube(3)
+a.render("cube")

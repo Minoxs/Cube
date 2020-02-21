@@ -33,9 +33,9 @@ I might add an explanation of how the rotations translate into text later, might
 - [ ] Standard User Interface (?)
 - [ ] Graphical User Interface (?)
 - [ ] Start Menu
-- [ ] Save&Load Game
-- [ ] Different Render Modes
+- [ ] Save&Load Game <b>(WIP)</b>
+- [ ] Different Render Modes <b>(WIP)</b>
 - [ ] Moves log!
-- [ ] Show&Load scramble seed
+- [ ] Show&Load scramble seed <b>(WIP)</b>
     
 ##### Feel free to make suggestions and criticism :)
