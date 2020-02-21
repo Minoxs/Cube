@@ -1,8 +1,10 @@
 import random
+import hashlib
 
-class InvalidCube(Exception):
+class InvalidCubeHash(Exception):
 	def __init__(self):
-		print("TBA?")
+		print("Loaded cube has invalid hash")
+		print("Cube might be corrupted") #Exception when the cube hash is invalid
 
 class TinyCubeException(Exception): #Error Exception when the cube is too small, more for vanity than anything hihi
 	def __init__(self):
@@ -85,7 +87,12 @@ class Cube:
 		else:
 			return false
 
-	def save(self): #Saves a list with all the components necessary to reload the cube
+	def __hash__(self):
+		components = str(self.getComponents()).encode('UTF-8')
+		cubeHash = hashlib.md5(components).hexdigest()
+		return int(cubeHash, 16) #Gives every cube object a unique integer value, used for error-checking and file editing when Loading
+
+	def getComponents(self): #Getter for all info on the cube
 		components = [
 		self.size,
 		self.pieces,
@@ -97,7 +104,18 @@ class Cube:
 		]
 		return components
 
-	def load(cubeComponentList): #Input is the component LIST of the cube, in order
+	def getLogs(self): #Getter for the move logs of the cube
+		return [self.playerMoves, self.allMoves]
+
+	def save(self): #Saves a list with all the components necessary to reload the cube
+		components = self.getComponents()
+
+		cubeHash = hash(self)
+		components.append(cubeHash)
+
+		return components
+
+	def load(cubeComponentList, checkCubeHash = True): #Input is the component LIST of the cube, in order
 		if type(cubeComponentList) is not list:
 			raise TypeError
 
@@ -109,10 +127,11 @@ class Cube:
 		tempObject.isSolved      = cubeComponentList[5]
 		tempObject.scrambleSeeds = cubeComponentList[6]
 
-		return tempObject
+		cubeHash = hash(tempObject)
+		if checkCubeHash and cubeHash != cubeComponentList[-1]:
+			raise InvalidCubeHash
 
-	def getLogs(self): #Getter for the move logs of the cube
-		return [self.playerMoves, self.allMoves]
+		return tempObject
 
 	def render(self, toRender, mode = 1): #Renders either the cube or its logged predecessors
 		if toRender == "cube":
@@ -135,6 +154,13 @@ class Cube:
 					print(line)
 			print("\n")
 
+	def logMove(self): #For every rotation, I create a log of how the cube was before :)
+		for logList in [self.playerMoves, self.allMoves]:
+			temp = []
+			for pieces in self.pieces:
+				temp.append(list(pieces))
+			logList.append(temp)
+
 	def checkChoice(self, choice): #For every rotation I need to check if input is valid, so I made a method for it
 		choice = choice - 1
 		if choice < 0 or type(choice) is not int:
@@ -142,13 +168,6 @@ class Cube:
 		if choice >= self.size:
 			choice = choice%self.size
 		return choice
-
-	def logMove(self): #For every rotation, I create a log of how the cube was before :)
-		for logList in [self.playerMoves, self.allMoves]:
-			temp = []
-			for pieces in self.pieces:
-				temp.append(list(pieces))
-			logList.append(temp)
 
 	def frontClockwise(self, choice): # Rotates face number 'choice' clockwise
 		num = self.checkChoice(choice)
@@ -300,12 +319,3 @@ class Cube:
 a = Cube(3)
 a.render("cube")
 
-a.scrambleCube(1)
-a.scrambleCube(1)
-a.scrambleCube(1, 10)
-a.scrambleCube(1)
-
-a.render("cube")
-
-cubeSave = a.save()
-print(cubeSave[6])

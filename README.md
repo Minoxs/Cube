@@ -34,7 +34,7 @@ I might add an explanation of how the rotations translate into text later, might
 - [ ] Graphical User Interface (?)
 - [ ] Start Menu
 - [x] Save&Load Game
-- [ ] Add a Check if the cube loaded is the same as the one saved <b>(WIP)</b>
+- [x] Add a Check if the cube loaded is the same as the one saved
 - [ ] Different Render Modes <b>(WIP)</b>
 - [x] Moves log
 - [x] Show&Load scramble seed
