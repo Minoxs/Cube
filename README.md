@@ -32,6 +32,6 @@ I might add an explanation of how the rotations translate into text later, might
 - Text-Only UI
 - Graphical UI
    
-### Lots of cool things coming up soon! Check out the Test_Branch for detailed proggress
+### Lots of cool things coming up soon! Check out the Test_Branch for detailed progress
    
 #### Feel free to make sugestions and criticism :)
