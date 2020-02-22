@@ -35,7 +35,7 @@ I might add an explanation of how the rotations translate into text later, might
 - [ ] Start Menu
 - [x] Save&Load Game
 - [x] Add a Check if the cube loaded is the same as the one saved
-- [ ] <s>Different Render Modes</s> <b>(CANCELLED)</b>
+- [ ] <s>Different Render Modes</s> <b>(POSTPONED)</b>
 - [x] Moves log
 - [x] Show&Load scramble seed
     
