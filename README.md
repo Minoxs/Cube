@@ -25,11 +25,13 @@ I might add an explanation of how the rotations translate into text later, might
 -Column Down-Up: <b>cc(<i>column_number</i>)</b>   
    
 # To-Be-Added:
-- [ ] Start Menu
-- [ ] Save&Load Game
-- [ ] Different Render Modes
-- [ ] Multiple Rotations at once
-- [ ] Moves log (?)
-- [ ] Show&Load scramble seed
-    
+- Start Menu
+- Save & Load Game
+- Show & Load Scramble Moves
+- Moves log
+- Text-Only UI
+- Graphical UI
+   
+### Lots of cool things coming up soon! Check out the Test_Branch for detailed proggress
+   
 #### Feel free to make sugestions and criticism :)
